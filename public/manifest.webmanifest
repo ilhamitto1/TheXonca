@@ -1,0 +1,18 @@
+{
+  "name": "The Xonca",
+  "short_name": "Xonca",
+  "description": "Premium toy dekorasiyası və tədbir dizayn atelyesi",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#fbf9f6",
+  "theme_color": "#14110e",
+  "lang": "az",
+  "icons": [
+    {
+      "src": "/icons/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

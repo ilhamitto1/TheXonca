@@ -1,0 +1,119 @@
+/* The Xonca — Luxury Design Tokens */
+
+:root {
+  /* Surfaces */
+  --xonca-ivory: #fbf9f6;
+  --xonca-pearl: #ffffff;
+  --xonca-cream: #f3eee6;
+  --xonca-sand: #e8e0d4;
+  --xonca-mist: #d9d0c4;
+  --xonca-marble: #f7f3ed;
+
+  /* Brand metals */
+  --xonca-gold: #b8956c;
+  --xonca-gold-soft: #d4bc96;
+  --xonca-gold-deep: #8f704a;
+  --xonca-champagne: #c9a97a;
+  --xonca-bronze: #7a5c3e;
+
+  /* Ink */
+  --xonca-ink: #14110e;
+  --xonca-espresso: #1c1814;
+  --xonca-charcoal: #2a2420;
+  --xonca-stone: #5c534a;
+  --xonca-muted: #8a8074;
+
+  /* Accents */
+  --xonca-blush: #e6d4ce;
+  --xonca-rose: #c9a9a0;
+  --xonca-sage: #b7b5a4;
+
+  /* Glass */
+  --xonca-glass: rgba(255, 255, 255, 0.55);
+  --xonca-glass-border: rgba(184, 149, 108, 0.22);
+  --xonca-glass-dark: rgba(20, 17, 14, 0.55);
+
+  /* Gradients */
+  --xonca-gradient-luxury: linear-gradient(
+    135deg,
+    #fbf9f6 0%,
+    #f3eee6 40%,
+    #efe6d8 70%,
+    #e8dcc8 100%
+  );
+  --xonca-gradient-gold: linear-gradient(
+    120deg,
+    #8f704a 0%,
+    #d4bc96 45%,
+    #b8956c 70%,
+    #c9a97a 100%
+  );
+  --xonca-gradient-ink: linear-gradient(180deg, #1c1814 0%, #14110e 100%);
+  --xonca-gradient-hero: radial-gradient(
+      ellipse 80% 60% at 70% 20%,
+      rgba(212, 188, 150, 0.28) 0%,
+      transparent 55%
+    ),
+    radial-gradient(
+      ellipse 60% 50% at 15% 80%,
+      rgba(230, 212, 206, 0.35) 0%,
+      transparent 50%
+    ),
+    linear-gradient(165deg, #fbf9f6 0%, #f3eee6 50%, #ebe3d6 100%);
+
+  /* Shadows */
+  --xonca-shadow-soft: 0 10px 40px rgba(20, 17, 14, 0.06);
+  --xonca-shadow-lift: 0 20px 60px rgba(20, 17, 14, 0.1);
+  --xonca-shadow-gold: 0 12px 40px rgba(184, 149, 108, 0.25);
+  --xonca-shadow-inset: inset 0 1px 0 rgba(255, 255, 255, 0.65);
+
+  /* Motion */
+  --xonca-ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --xonca-ease-lux: cubic-bezier(0.65, 0, 0.35, 1);
+  --xonca-duration-fast: 0.35s;
+  --xonca-duration: 0.7s;
+  --xonca-duration-slow: 1.2s;
+
+  /* Layout */
+  --xonca-nav-h: 5.5rem;
+  --xonca-section-y: clamp(5rem, 12vw, 10rem);
+  --xonca-container: 1440px;
+  --xonca-gutter: clamp(1.25rem, 4vw, 3.5rem);
+
+  /* Semantic (light) */
+  --background: var(--xonca-ivory);
+  --foreground: var(--xonca-ink);
+  --card: var(--xonca-pearl);
+  --card-foreground: var(--xonca-ink);
+  --primary: var(--xonca-ink);
+  --primary-foreground: var(--xonca-ivory);
+  --secondary: var(--xonca-cream);
+  --secondary-foreground: var(--xonca-charcoal);
+  --muted: var(--xonca-sand);
+  --muted-foreground: var(--xonca-stone);
+  --accent: var(--xonca-gold);
+  --accent-foreground: var(--xonca-ink);
+  --border: rgba(20, 17, 14, 0.08);
+  --ring: var(--xonca-gold-soft);
+  --destructive: #9b3b3b;
+  --radius: 0.25rem;
+}
+
+.dark {
+  --background: var(--xonca-espresso);
+  --foreground: var(--xonca-ivory);
+  --card: var(--xonca-charcoal);
+  --card-foreground: var(--xonca-ivory);
+  --primary: var(--xonca-ivory);
+  --primary-foreground: var(--xonca-ink);
+  --secondary: #26211c;
+  --secondary-foreground: var(--xonca-cream);
+  --muted: #322c26;
+  --muted-foreground: var(--xonca-mist);
+  --accent: var(--xonca-gold-soft);
+  --accent-foreground: var(--xonca-ink);
+  --border: rgba(255, 255, 255, 0.08);
+  --ring: var(--xonca-gold);
+  --xonca-glass: rgba(28, 24, 20, 0.65);
+  --xonca-glass-border: rgba(212, 188, 150, 0.18);
+}
