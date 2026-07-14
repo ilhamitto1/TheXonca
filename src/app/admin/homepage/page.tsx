@@ -30,8 +30,10 @@ export default function HomepageCmsPage() {
       boolean
     >,
   );
-  const [heroTitle, setHeroTitle] = useState(homeContent.hero.title);
-  const [heroSubtitle, setHeroSubtitle] = useState(homeContent.hero.subtitle);
+  const [heroTitle, setHeroTitle] = useState<string>(homeContent.hero.title);
+  const [heroSubtitle, setHeroSubtitle] = useState<string>(
+    homeContent.hero.subtitle,
+  );
 
   return (
     <div className="space-y-8">
