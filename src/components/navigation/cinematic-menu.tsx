@@ -28,26 +28,26 @@ export function CinematicMenu() {
             <div className="absolute inset-0 noise-overlay" />
           </div>
 
-          <div className="container-lux relative z-10 flex h-full flex-col py-8">
+          <div className="container-lux relative z-10 flex h-full flex-col overflow-y-auto overscroll-contain py-6 pb-[max(1.5rem,env(safe-area-inset-bottom))] pt-[max(1.5rem,env(safe-area-inset-top))]">
             <div className="flex items-center justify-between">
               <p className="font-body text-[10px] uppercase tracking-[0.4em] text-gold-soft">
-                Atelyeni kəşf et
+                Menyü
               </p>
               <button
                 type="button"
                 onClick={() => setMenuOpen(false)}
-                className="font-body text-xs uppercase tracking-[0.25em] text-ivory/80 transition hover:text-gold-soft"
+                className="flex h-11 items-center rounded-full border border-ivory/15 px-5 font-body text-xs uppercase tracking-[0.25em] text-ivory/90"
               >
                 Bağla
               </button>
             </div>
 
             <m.nav
-              className="my-auto flex flex-col gap-2 sm:gap-3"
+              className="my-auto flex flex-col gap-1 py-8 sm:gap-2"
               initial="closed"
               animate="open"
               variants={{
-                open: { transition: { staggerChildren: 0.08, delayChildren: 0.2 } },
+                open: { transition: { staggerChildren: 0.06, delayChildren: 0.15 } },
                 closed: {},
               }}
             >
@@ -56,12 +56,12 @@ export function CinematicMenu() {
                   <Link
                     href={link.href}
                     onClick={() => setMenuOpen(false)}
-                    className="group flex items-baseline gap-4 sm:gap-6"
+                    className="group flex min-h-14 items-center gap-4 py-2 sm:gap-6"
                   >
                     <span className="font-body text-[10px] tracking-[0.3em] text-gold/70">
                       {String(i + 1).padStart(2, "0")}
                     </span>
-                    <span className="font-display text-[clamp(2.8rem,10vw,7.5rem)] leading-[0.9] tracking-[-0.04em] transition-colors group-hover:text-gold-soft">
+                    <span className="font-display text-[clamp(2.2rem,9vw,6.5rem)] leading-[0.95] tracking-[-0.04em] transition-colors group-hover:text-gold-soft">
                       {link.label}
                     </span>
                   </Link>

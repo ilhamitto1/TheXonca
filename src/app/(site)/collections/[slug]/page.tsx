@@ -37,24 +37,24 @@ export default async function CollectionDetailPage({ params }: Props) {
   const price = getCollectionPrice(collection);
 
   return (
-    <div className="bg-ivory pb-24 pt-36">
-      <div className="container-lux grid gap-12 lg:grid-cols-2">
-        <div className="space-y-4">
-          <div className="overflow-hidden shadow-lift">
+    <div className="bg-ivory pb-28 pt-28 sm:pb-24 sm:pt-36">
+      <div className="container-lux grid gap-8 lg:grid-cols-2 lg:gap-12">
+        <div className="space-y-3 sm:space-y-4">
+          <div className="overflow-hidden rounded-3xl shadow-lift">
             <CollectionPlaceholder
               title={collection.name}
               variant="hero"
               index={0}
             />
           </div>
-          <div className="grid grid-cols-3 gap-3">
+          <div className="grid grid-cols-3 gap-2 sm:gap-3">
             {[1, 2, 3].map((n) => (
               <CollectionPlaceholder
                 key={n}
                 title={`${collection.name} ${n}`}
                 variant="gallery"
                 index={n}
-                className="aspect-square"
+                className="aspect-square rounded-2xl"
               />
             ))}
           </div>
@@ -66,12 +66,14 @@ export default async function CollectionDetailPage({ params }: Props) {
               {collection.category} · {collection.occasion}
             </p>
             {collection.premium ? (
-              <span className="border border-gold/40 px-3 py-1 font-body text-[10px] uppercase tracking-[0.2em] text-gold-deep">
+              <span className="rounded-full border border-gold/40 px-3 py-1 font-body text-[10px] uppercase tracking-[0.2em] text-gold-deep">
                 Premium
               </span>
             ) : null}
           </div>
-          <h1 className="mt-4 font-display text-5xl text-ink">{collection.name}</h1>
+          <h1 className="mt-4 font-display text-[clamp(2.4rem,6vw,3.5rem)] text-ink">
+            {collection.name}
+          </h1>
           <p className="mt-4 font-body text-stone">{collection.availabilityLabel}</p>
           <p className="mt-6 font-display text-4xl text-gold-deep">
             {formatCurrency(price, "AZN")}
@@ -106,16 +108,19 @@ export default async function CollectionDetailPage({ params }: Props) {
             <p>• Rəng: {collection.colorTheme}</p>
           </div>
 
-          <div className="mt-10 flex flex-wrap gap-4">
-            <Button asChild variant="gold" size="lg">
+          <div className="mt-8 hidden flex-wrap gap-3 sm:flex">
+            <Button asChild variant="gold" size="lg" magnetic={false}>
               <Link href={`/booking?collection=${collection.slug}`}>
                 Rezerv et
               </Link>
             </Button>
-            <Button asChild variant="outline" size="lg">
+            <Button asChild variant="outline" size="lg" magnetic={false}>
               <Link href="/collections">Kolleksiyalara qayıt</Link>
             </Button>
           </div>
+          <p className="mt-4 font-body text-xs text-mist sm:hidden">
+            Aşağıdakı düymə ilə birbaşa rezervasiyaya keçin.
+          </p>
         </div>
       </div>
 
