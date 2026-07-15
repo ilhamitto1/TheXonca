@@ -1,12 +1,5 @@
-import type { Metadata } from "next";
-import { ServicesPage } from "@/components/services/services-page";
+import { redirect } from "next/navigation";
 
-export const metadata: Metadata = {
-  title: "Xidmətlər",
-  description:
-    "The Xonca ilə mərasim memarlığı, qəbul couture, çiçək atelyesi və tam təcrübə dizaynı.",
-};
-
-export default function Page() {
-  return <ServicesPage />;
+export default function ServicesRedirectPage() {
+  redirect("/collections");
 }

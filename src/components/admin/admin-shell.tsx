@@ -6,7 +6,6 @@ import { useTheme } from "next-themes";
 import {
   LayoutDashboard,
   CalendarDays,
-  ShoppingBag,
   Images,
   Package,
   FileText,
@@ -14,12 +13,13 @@ import {
   MessageSquare,
   Settings,
   Sparkles,
-  BarChart3,
+  Truck,
   Sun,
   Moon,
   LogOut,
   Menu,
   X,
+  BookOpen,
 } from "lucide-react";
 import { useState } from "react";
 import { signOut } from "next-auth/react";
@@ -28,15 +28,15 @@ import { m, AnimatePresence } from "motion/react";
 
 const links = [
   { href: "/admin", label: "Ümumi baxış", icon: LayoutDashboard },
-  { href: "/admin/bookings", label: "Rezervasiyalar", icon: CalendarDays },
-  { href: "/admin/orders", label: "Sifarişlər", icon: ShoppingBag },
-  { href: "/admin/products", label: "Məhsullar", icon: Package },
+  { href: "/admin/collections", label: "Kolleksiyalar", icon: Package },
+  { href: "/admin/reservations", label: "Rezervasiyalar", icon: CalendarDays },
+  { href: "/admin/delivery", label: "Çatdırılma", icon: Truck },
+  { href: "/admin/catalog", label: "Kataloq", icon: BookOpen },
   { href: "/admin/gallery", label: "Qalereya", icon: Images },
-  { href: "/admin/blog", label: "Bloq", icon: FileText },
   { href: "/admin/homepage", label: "Ana səhifə CMS", icon: Sparkles },
-  { href: "/admin/analytics", label: "Analitika", icon: BarChart3 },
   { href: "/admin/messages", label: "Mesajlar", icon: MessageSquare },
   { href: "/admin/users", label: "İstifadəçilər", icon: Users },
+  { href: "/admin/blog", label: "Bloq", icon: FileText },
   { href: "/admin/settings", label: "Parametrlər", icon: Settings },
 ];
 
@@ -74,7 +74,7 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
   );
 
   return (
-    <div className="min-h-screen bg-espresso text-ivory dark:bg-espresso">
+    <div className="min-h-screen bg-espresso text-ivory">
       <aside className="fixed inset-y-0 left-0 z-40 hidden w-64 border-r border-ivory/10 bg-charcoal/80 p-5 backdrop-blur lg:block">
         <Link href="/admin" className="font-display text-2xl tracking-tight">
           Xonca <span className="text-gold">Admin</span>
@@ -93,7 +93,7 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
             <Menu className="h-5 w-5" />
           </button>
           <p className="font-body text-xs uppercase tracking-[0.25em] text-mist">
-            Korporativ Panel
+            Xonça Rezervasiya Paneli
           </p>
           <div className="flex items-center gap-2">
             <button
@@ -118,7 +118,6 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
             </button>
           </div>
         </header>
-
         <main className="p-4 sm:p-6 lg:p-8">{children}</main>
       </div>
 

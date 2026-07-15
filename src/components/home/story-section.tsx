@@ -1,9 +1,9 @@
 "use client";
 
-import Image from "next/image";
-import { Reveal, RevealImage } from "@/components/animations/reveal";
+import { Reveal } from "@/components/animations/reveal";
 import { TextReveal } from "@/components/animations/text-reveal";
-import { homeContent } from "@/data/content";
+import { CollectionPlaceholder } from "@/components/shared/collection-placeholder";
+import { homeContent } from "@/data/collections";
 
 export function StorySection() {
   const { story } = homeContent;
@@ -44,18 +44,15 @@ export function StorySection() {
         </div>
 
         <div className="relative lg:col-span-7">
-          <RevealImage className="aspect-[16/11] w-full shadow-lift">
-            <Image
-              src="https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?w=1600&q=85"
-              alt="The Xonca atelye atmosferi"
-              fill
-              className="object-cover"
-              sizes="(max-width: 1024px) 100vw, 55vw"
-            />
-          </RevealImage>
-          <Reveal delay={0.25} className="absolute -bottom-8 left-6 max-w-xs glass p-6 sm:left-10">
+          <div className="overflow-hidden shadow-lift">
+            <CollectionPlaceholder title="The Xonca" variant="gallery" index={1} />
+          </div>
+          <Reveal
+            delay={0.25}
+            className="absolute -bottom-8 left-6 max-w-xs glass p-6 sm:left-10"
+          >
             <p className="font-display text-2xl leading-snug text-ink">
-              “Atmosfer qonaqların əbədi xatırladığı sakit lüksdür.”
+              “Hər xonça mərasimin lüks imzasıdır.”
             </p>
           </Reveal>
         </div>

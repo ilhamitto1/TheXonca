@@ -25,16 +25,16 @@ type FormValues = z.infer<typeof schema>;
 
 const faqs = [
   {
-    q: "Nə qədər əvvəldən rezerv etməliyik?",
-    a: "Pik mövsümlər 10–14 ay əvvəldən rezerv edilir. Kiçik bayramlar isə 8 həftə ərzində hazırlana bilər.",
+    q: "Rezervasiya necə işləyir?",
+    a: "Kolleksiya, tarix və detalları seçin — sistem WhatsApp mesajını avtomatik açır.",
   },
   {
-    q: "Beynəlxalq səyahət edirsinizmi?",
-    a: "Bəli. The Xonca dünyanın hər yerində atmosferlər dizayn edir — təyinat haqları təklifinizdə göstərilir.",
+    q: "Çatdırılma haqqı nə qədərdir?",
+    a: `Standart çatdırılma ${SITE.delivery.defaultPrice} AZN-dir. Admin bu qiyməti dəyişə bilər.`,
   },
   {
-    q: "Paketi fərdiləşdirə bilərikmi?",
-    a: "Hər əməkdaşlıq unikaldır. Paketlər başlanğıc çərçivələridir, hazır şablonlar deyil.",
+    q: "Tumba ayrıca sifariş olunur?",
+    a: "Bəzi kolleksiyalarda daxildir, digərlərində opsional seçim kimi əlavə olunur.",
   },
 ];
 
@@ -53,7 +53,7 @@ export function ContactPage() {
         toast.success("Mesaj göndərildi");
         form.reset();
       } else {
-        toast.error(result.error || "Göndərmək mümkün olmadı");
+        toast.error(result.error || "Göndərilə bilmədi");
       }
     } finally {
       setPending(false);
@@ -61,8 +61,13 @@ export function ContactPage() {
   });
 
   return (
-    <div className="bg-ivory pb-24 pt-36">
-      <div className="container-lux grid gap-16 lg:grid-cols-2">
+    <div className="relative overflow-hidden bg-ivory pb-24 pt-36">
+      <div className="pointer-events-none absolute inset-0 opacity-50">
+        <div className="absolute top-20 right-0 h-72 w-72 rounded-full bg-gold/10 blur-3xl" />
+        <div className="absolute bottom-10 left-0 h-64 w-64 rounded-full bg-blush/20 blur-3xl" />
+      </div>
+
+      <div className="container-lux relative z-10 grid gap-16 lg:grid-cols-2">
         <div>
           <Reveal>
             <p className="font-body text-[10px] uppercase tracking-[0.4em] text-gold-deep">
@@ -70,7 +75,7 @@ export function ContactPage() {
             </p>
           </Reveal>
           <TextReveal
-            text="Atelyeyə yazın"
+            text="Atelye ilə əlaqə saxlayın"
             as="h1"
             className="mt-4 font-display text-[clamp(2.8rem,6vw,4.8rem)] text-ink"
           />
@@ -78,19 +83,42 @@ export function ContactPage() {
             <div className="mt-8 space-y-3 font-body text-sm text-stone">
               <p>{SITE.address.line1}</p>
               <p>
-                {SITE.address.city}, {SITE.address.region} {SITE.address.postal}
+                {SITE.address.city}, {SITE.address.country}
               </p>
-              <a href={`mailto:${SITE.email}`} className="block text-gold-deep">
-                {SITE.email}
+              <a href={`tel:${SITE.phone.replace(/\s/g, "")}`} className="block">
+                {SITE.phone}
               </a>
-              <a href={`tel:${SITE.phone.replace(/\s/g, "")}`}>{SITE.phone}</a>
+              <a
+                href={`https://wa.me/${SITE.whatsapp}`}
+                target="_blank"
+                rel="noreferrer"
+                className="block text-gold-deep"
+              >
+                WhatsApp
+              </a>
+              <a
+                href={SITE.social.instagram}
+                target="_blank"
+                rel="noreferrer"
+                className="block"
+              >
+                Instagram
+              </a>
+              <div id="delivery" className="pt-4">
+                <p>{SITE.workingHours.weekdays}</p>
+                <p>{SITE.workingHours.weekend}</p>
+                <p>{SITE.workingHours.sunday}</p>
+                <p className="mt-3 text-gold-deep">
+                  Çatdırılma: {SITE.delivery.defaultPrice} AZN
+                </p>
+              </div>
             </div>
           </Reveal>
 
           <div className="mt-12 overflow-hidden border border-ink/10">
             <iframe
               title="The Xonca atelye xəritəsi"
-              src="https://maps.google.com/maps?q=48%20Nizami%20Street%20Baku&t=&z=14&ie=UTF8&iwloc=&output=embed"
+              src="https://maps.google.com/maps?q=Nizami%20Street%20Baku&t=&z=14&ie=UTF8&iwloc=&output=embed"
               className="h-64 w-full grayscale contrast-125"
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
@@ -101,7 +129,7 @@ export function ContactPage() {
         <Reveal>
           <form
             onSubmit={onSubmit}
-            className="space-y-5 border border-ink/8 bg-pearl p-6 sm:p-10"
+            className="space-y-5 border border-ink/8 bg-pearl/90 p-6 backdrop-blur sm:p-10"
           >
             <div className="space-y-3">
               <Label htmlFor="name">Ad</Label>
@@ -126,7 +154,7 @@ export function ContactPage() {
         </Reveal>
       </div>
 
-      <div className="container-lux mt-24 max-w-3xl">
+      <div id="faq" className="container-lux relative z-10 mt-24 max-w-3xl">
         <h2 className="font-display text-3xl text-ink">
           Tez-tez verilən suallar
         </h2>

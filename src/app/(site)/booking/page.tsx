@@ -1,12 +1,23 @@
 import type { Metadata } from "next";
-import { BookingWizard } from "@/components/booking/booking-wizard";
+import { Suspense } from "react";
+import { ReservationWizard } from "@/components/booking/reservation-wizard";
 
 export const metadata: Metadata = {
-  title: "Rezerv et",
+  title: "Rezervasiya",
   description:
-    "Şəxsi məsləhətləşmə rezerv edin və The Xonca ilə toy atmosferinizi dizayn edin.",
+    "The Xonca kolleksiyasını seçin, tarix və tumba seçimini edin — WhatsApp ilə rezerv edin.",
 };
 
 export default function BookingPage() {
-  return <BookingWizard />;
+  return (
+    <Suspense
+      fallback={
+        <div className="flex min-h-[50vh] items-center justify-center pt-36 font-body text-stone">
+          Rezervasiya yüklənir...
+        </div>
+      }
+    >
+      <ReservationWizard />
+    </Suspense>
+  );
 }

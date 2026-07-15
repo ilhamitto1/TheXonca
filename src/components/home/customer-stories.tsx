@@ -21,7 +21,7 @@ export function CustomerStories() {
               </p>
             </Reveal>
             <TextReveal
-              text="Koridordan gələn sözlər"
+              text="Mərasimdən gələn sözlər"
               as="h2"
               className="mt-4 font-display text-[clamp(2.4rem,5vw,4.2rem)] text-ink"
             />

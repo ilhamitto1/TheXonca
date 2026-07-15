@@ -19,11 +19,11 @@ export function AnimatedProcess() {
       <div className="container-lux mb-12">
         <Reveal>
           <p className="font-body text-[10px] uppercase tracking-[0.4em] text-gold-soft">
-            Animasiyalı Proses
+            Rezervasiya prosesi
           </p>
         </Reveal>
         <TextReveal
-          text="Atmosfer necə doğulur"
+          text="Seçimdən WhatsApp təsdiqinə"
           as="h2"
           className="mt-4 font-display text-[clamp(2.4rem,5vw,4.2rem)] text-ivory"
         />

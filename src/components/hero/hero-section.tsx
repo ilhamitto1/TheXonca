@@ -1,16 +1,16 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { m, useMotionValue, useSpring, useTransform } from "motion/react";
 import dynamic from "next/dynamic";
 import { Button } from "@/components/ui/button";
-import { homeContent } from "@/data/content";
+import { CollectionPlaceholder } from "@/components/shared/collection-placeholder";
+import { homeContent } from "@/data/collections";
 import { useUIStore } from "@/stores/ui-store";
 
 const FloralScene = dynamic(
   () =>
-    import("@/components/three/floral-scene").then((m) => m.FloralScene),
+    import("@/components/three/floral-scene").then((mod) => mod.FloralScene),
   { ssr: false },
 );
 
@@ -58,7 +58,7 @@ export function HeroSection() {
           </m.p>
 
           <m.h1
-            className="mt-6 font-display text-[clamp(3.2rem,9vw,7.5rem)] leading-[0.92] tracking-[-0.04em] text-ink text-balance"
+            className="mt-6 font-display text-[clamp(3rem,8vw,6.5rem)] leading-[0.94] tracking-[-0.04em] text-ink text-balance"
             initial={{ opacity: 0, y: 50 }}
             animate={hasLoaded ? { opacity: 1, y: 0 } : {}}
             transition={{ delay: 0.28, duration: 1.15, ease: [0.22, 1, 0.36, 1] }}
@@ -98,36 +98,24 @@ export function HeroSection() {
         </div>
 
         <m.div
-          className="relative mx-auto aspect-[4/5] w-full max-w-md lg:max-w-none"
+          className="relative mx-auto w-full max-w-md lg:max-w-none"
           style={{ x: imgX, y: imgY }}
           initial={{ opacity: 0, scale: 1.06 }}
           animate={hasLoaded ? { opacity: 1, scale: 1 } : {}}
           transition={{ delay: 0.45, duration: 1.3, ease: [0.22, 1, 0.36, 1] }}
         >
           <div className="absolute -inset-4 rounded-[2rem] bg-gradient-to-br from-gold/20 via-transparent to-blush/30 blur-2xl" />
-          <div className="relative h-full overflow-hidden rounded-[1.5rem] shadow-lift">
-            <Image
-              src="https://images.unsplash.com/photo-1519741497674-611481863552?w=1400&q=85"
-              alt="The Xonca tərəfindən lüks toy çiçək quraşdırması"
-              fill
-              priority
-              className="object-cover"
-              sizes="(max-width: 1024px) 90vw, 42vw"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-ink/35 via-transparent to-transparent" />
-            <div className="absolute bottom-6 left-6 right-6 glass rounded-2xl px-5 py-4">
-              <p className="font-body text-[10px] uppercase tracking-[0.3em] text-stone">
-                Seçilmiş Atmosfer
-              </p>
-              <p className="mt-1 font-display text-2xl text-ink">Villa Aurelia</p>
+          <div className="relative overflow-hidden rounded-[1.5rem] shadow-lift">
+            <CollectionPlaceholder title="Imperial Gold" variant="hero" index={0} />
+            <div className="absolute inset-x-0 bottom-0 p-6">
+              <div className="glass rounded-2xl px-5 py-4">
+                <p className="font-body text-[10px] uppercase tracking-[0.3em] text-stone">
+                  Seçilmiş kolleksiya
+                </p>
+                <p className="mt-1 font-display text-2xl text-ink">Imperial Gold</p>
+              </div>
             </div>
           </div>
-
-          <m.div
-            className="absolute -left-6 top-1/3 hidden h-28 w-28 rounded-full border border-gold/30 sm:block"
-            animate={{ rotate: 360 }}
-            transition={{ duration: 28, repeat: Infinity, ease: "linear" }}
-          />
         </m.div>
       </div>
 

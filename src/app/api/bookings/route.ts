@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
-import { submitBooking } from "@/actions/booking";
+import { submitReservation } from "@/actions/reservation";
 
 export async function POST(request: Request) {
   const body = await request.json();
-  const result = await submitBooking(body);
+  const result = await submitReservation(body);
   return NextResponse.json(result, { status: result.success ? 200 : 400 });
 }

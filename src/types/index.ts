@@ -3,18 +3,67 @@ export type NavLink = {
   href: string;
 };
 
-export type BookingPayload = {
-  date: string;
-  packageId: string;
-  themeId: string;
-  flowers: string[];
-  guestCount: number;
-  budget: number;
-  location: string;
+export type CollectionStatus = "AVAILABLE" | "LIMITED" | "RESERVED" | "ARCHIVED";
+
+export type Collection = {
+  id: string;
+  slug: string;
   name: string;
-  email: string;
-  phone?: string;
+  shortDescription: string;
+  description: string;
+  category: string;
+  occasion: string;
+  price: number;
+  discountPrice?: number | null;
+  premium: boolean;
+  status: CollectionStatus;
+  availabilityLabel: string;
+  includedGifts: string[];
+  decorationDetails: string[];
+  flowers: string[];
+  ribbonType: string;
+  premiumMaterials: string[];
+  colorTheme: string;
+  xoncaIncluded: boolean;
+  tumbaIncluded: boolean;
+  tumbaOptional: boolean;
+  tumbaPrice: number;
+  deliveryAvailable: boolean;
+  deliveryPrice?: number | null;
+  preparationTime: string;
+  dimensions: string;
+  reservationInfo: string;
+  deliveryInfo: string;
+  maxQuantity: number;
+  images: string[];
+  videos: string[];
+  seoTitle?: string;
+  seoDescription?: string;
+  faq: { q: string; a: string }[];
+  unavailableDates: string[];
+};
+
+export type ReservationPayload = {
+  collectionId: string;
+  collectionSlug: string;
+  collectionName: string;
+  date: string;
+  xoncaQuantity: number;
+  needTumba: boolean;
+  tumbaQuantity: number;
+  needDelivery: boolean;
+  deliveryFee: number;
+  name: string;
+  surname: string;
+  phone: string;
+  email?: string;
+  restaurantName: string;
+  deliveryAddress: string;
   notes?: string;
+  unitPrice: number;
+  tumbaUnitPrice: number;
+  subtotal: number;
+  total: number;
 };
 
 export type ContactPayload = {
@@ -24,36 +73,31 @@ export type ContactPayload = {
   message: string;
 };
 
-export type Product = {
-  id: string;
-  slug: string;
-  name: string;
-  category: string;
-  price: number;
-  stock: number;
-  image: string;
-  description: string;
-};
-
-export type GalleryItem = {
+export type CatalogItem = {
   id: string;
   title: string;
   category: string;
-  image: string;
-  aspect: "tall" | "wide" | "square";
+  description: string;
+  type: "pdf" | "brochure";
+  fileUrl?: string;
+  pages?: number;
+  year: string;
 };
 
 export type CmsSectionKey =
   | "hero"
   | "story"
-  | "featuredEvents"
-  | "gallery"
-  | "themes"
-  | "services"
-  | "timeline"
+  | "collections"
   | "process"
+  | "whyUs"
   | "testimonials"
   | "instagram"
   | "cta";
+
+export type ReservationStatus =
+  | "PENDING"
+  | "CONFIRMED"
+  | "COMPLETED"
+  | "CANCELLED";
 
 export type UserRole = "SUPER_ADMIN" | "ADMIN" | "EDITOR" | "VIEWER" | "CLIENT";

@@ -2,7 +2,7 @@ export { cn } from "./cn";
 
 export function formatCurrency(
   amount: number,
-  currency = "USD",
+  currency = "AZN",
   locale = "az-AZ",
 ) {
   return new Intl.NumberFormat(locale, {

@@ -1,15 +1,13 @@
 import type { MetadataRoute } from "next";
-import { blogPosts, products } from "@/data/content";
+import { collections } from "@/data/collections";
 import { SITE } from "@/lib/constants/site";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const staticRoutes = [
     "",
     "/about",
-    "/services",
-    "/gallery",
-    "/products",
-    "/blog",
+    "/collections",
+    "/catalog",
     "/booking",
     "/contact",
   ].map((path) => ({
@@ -19,19 +17,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: path === "" ? 1 : 0.8,
   }));
 
-  const productRoutes = products.map((p) => ({
-    url: `${SITE.url}/products/${p.slug}`,
+  const collectionRoutes = collections.map((c) => ({
+    url: `${SITE.url}/collections/${c.slug}`,
     lastModified: new Date(),
-    changeFrequency: "monthly" as const,
-    priority: 0.6,
+    changeFrequency: "weekly" as const,
+    priority: 0.7,
   }));
 
-  const blogRoutes = blogPosts.map((p) => ({
-    url: `${SITE.url}/blog/${p.slug}`,
-    lastModified: new Date(p.date),
-    changeFrequency: "monthly" as const,
-    priority: 0.6,
-  }));
-
-  return [...staticRoutes, ...productRoutes, ...blogRoutes];
+  return [...staticRoutes, ...collectionRoutes];
 }

@@ -6,29 +6,22 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { homeContent } from "@/data/content";
+import { homeContent } from "@/data/collections";
 import type { CmsSectionKey } from "@/types";
 
 const sections: { key: CmsSectionKey; label: string }[] = [
   { key: "hero", label: "Hero" },
   { key: "story", label: "Hekayə" },
-  { key: "featuredEvents", label: "Seçilmiş tədbirlər" },
-  { key: "gallery", label: "Qalereya" },
-  { key: "themes", label: "Temalar" },
-  { key: "services", label: "Xidmətlər" },
-  { key: "timeline", label: "Zaman xətti" },
+  { key: "collections", label: "Kolleksiyalar" },
   { key: "process", label: "Proses" },
+  { key: "whyUs", label: "Niyə biz" },
   { key: "testimonials", label: "Rəylər" },
-  { key: "instagram", label: "Instagram" },
   { key: "cta", label: "CTA" },
 ];
 
 export default function HomepageCmsPage() {
-  const [enabled, setEnabled] = useState<Record<CmsSectionKey, boolean>>(
-    Object.fromEntries(sections.map((s) => [s.key, true])) as Record<
-      CmsSectionKey,
-      boolean
-    >,
+  const [enabled, setEnabled] = useState<Record<string, boolean>>(
+    Object.fromEntries(sections.map((s) => [s.key, true])),
   );
   const [heroTitle, setHeroTitle] = useState<string>(homeContent.hero.title);
   const [heroSubtitle, setHeroSubtitle] = useState<string>(
@@ -42,10 +35,6 @@ export default function HomepageCmsPage() {
           CMS
         </p>
         <h1 className="mt-2 font-display text-4xl">Ana səhifə qurucusu</h1>
-        <p className="mt-3 max-w-2xl text-sm text-mist">
-          Bölmələri açın/bağlayın, hero mətnini redaktə edin və Prisma üçün
-          məzmunu hazırlayın. Dəyişikliklər dərc edilənə qədər yerli önizləmədədir.
-        </p>
       </div>
 
       <div className="grid gap-6 lg:grid-cols-2">
@@ -69,7 +58,6 @@ export default function HomepageCmsPage() {
                   className={`h-7 w-12 rounded-full transition ${
                     enabled[section.key] ? "bg-gold" : "bg-ivory/15"
                   }`}
-                  aria-label={`${section.label} bölməsini dəyiş`}
                 >
                   <span
                     className={`block h-5 w-5 rounded-full bg-ink transition ${
@@ -103,12 +91,7 @@ export default function HomepageCmsPage() {
             </div>
             <Button
               variant="gold"
-              onClick={() =>
-                toast.success("Qaralama yadda saxlandı", {
-                  description:
-                    "Daimi saxlamaq üçün SiteSetting / HomepageSection modellərini birləşdirin.",
-                })
-              }
+              onClick={() => toast.success("Qaralama yadda saxlandı")}
             >
               Qaralamanı saxla
             </Button>

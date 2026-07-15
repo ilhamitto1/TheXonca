@@ -1,11 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
 import { m } from "motion/react";
 import { Logo } from "@/components/navigation/logo";
 import { FOOTER_LINKS, SITE } from "@/lib/constants/site";
-import { homeContent } from "@/data/content";
+import { collections } from "@/data/collections";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
@@ -30,7 +29,7 @@ export function Footer() {
         <div className="grid gap-12 lg:grid-cols-[1.3fr_1fr]">
           <div>
             <p className="font-body text-[10px] uppercase tracking-[0.4em] text-gold-soft">
-              Atmosfer Evi
+              Premium Xonça Evi
             </p>
             <h2 className="mt-6 font-display text-[clamp(3rem,10vw,7rem)] leading-[0.9] tracking-[-0.04em]">
               The
@@ -48,7 +47,7 @@ export function Footer() {
           >
             <p className="font-display text-2xl">Atelye qeydləri</p>
             <p className="mt-2 font-body text-sm text-mist">
-              Mövsümi hekayələr, özəl açılışlar və dizayn esseyləri.
+              Yeni kolleksiyalar və özəl açılışlar.
             </p>
             <div className="mt-6 flex flex-col gap-3 sm:flex-row">
               <Input
@@ -70,7 +69,7 @@ export function Footer() {
             <p className="mt-4 font-body text-sm text-mist">
               {SITE.address.line1}
               <br />
-              {SITE.address.city}, {SITE.address.region} {SITE.address.postal}
+              {SITE.address.city}, {SITE.address.country}
             </p>
           </div>
           {(
@@ -100,29 +99,21 @@ export function Footer() {
           ))}
         </div>
 
-        <div className="mt-10 grid grid-cols-3 gap-3 sm:grid-cols-6">
-          {homeContent.instagram.slice(0, 6).map((src, i) => (
-            <a
-              key={src}
-              href={SITE.social.instagram}
-              target="_blank"
-              rel="noreferrer"
-              className="relative aspect-square overflow-hidden opacity-80 transition hover:opacity-100"
+        <div className="mt-10 flex flex-wrap gap-3">
+          {collections.slice(0, 6).map((c) => (
+            <Link
+              key={c.id}
+              href={`/collections/${c.slug}`}
+              className="border border-ivory/10 px-4 py-2 font-body text-xs text-mist transition hover:border-gold hover:text-ivory"
             >
-              <Image
-                src={src}
-                alt={`Instagram önizləmə ${i + 1}`}
-                fill
-                className="object-cover"
-                sizes="120px"
-              />
-            </a>
+              {c.name}
+            </Link>
           ))}
         </div>
 
         <div className="mt-10 flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
           <p className="font-body text-xs text-mist/70">
-            © {new Date().getFullYear()} {SITE.name}. Bütün atmosferlər qorunur.
+            © {new Date().getFullYear()} {SITE.name}. Bütün hüquqlar qorunur.
           </p>
           <div className="gold-line w-32" />
         </div>

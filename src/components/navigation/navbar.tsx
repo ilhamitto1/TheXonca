@@ -10,10 +10,11 @@ import { useUIStore } from "@/stores/ui-store";
 import { cn } from "@/lib/utils";
 
 const DESKTOP_LINKS = [
-  { label: "Xidmətlər", href: "/services" },
-  { label: "Qalereya", href: "/gallery" },
-  { label: "Kolleksiyalar", href: "/products" },
-  { label: "Jurnal", href: "/blog" },
+  { label: "Ana səhifə", href: "/" },
+  { label: "Kolleksiyalar", href: "/collections" },
+  { label: "Haqqımızda", href: "/about" },
+  { label: "Kataloq", href: "/catalog" },
+  { label: "Əlaqə", href: "/contact" },
 ];
 
 export function Navbar() {
@@ -44,15 +45,13 @@ export function Navbar() {
         <m.div
           className={cn(
             "container-lux flex items-center justify-between rounded-full px-4 py-3 transition-all duration-700 sm:px-6",
-            scrolled || isMenuOpen
-              ? "glass shadow-soft"
-              : "bg-transparent",
+            scrolled || isMenuOpen ? "glass shadow-soft" : "bg-transparent",
           )}
           layout
         >
           <Logo inverted={isMenuOpen && !scrolled} />
 
-          <nav className="absolute left-1/2 hidden -translate-x-1/2 items-center gap-8 lg:flex">
+          <nav className="absolute left-1/2 hidden -translate-x-1/2 items-center gap-6 xl:flex">
             {DESKTOP_LINKS.map((link) => (
               <Link
                 key={link.href}
@@ -73,7 +72,7 @@ export function Navbar() {
               className="hidden sm:inline-flex"
               magnetic={false}
             >
-              <Link href="/booking">Rezerv et</Link>
+              <Link href="/booking">Rezervasiya</Link>
             </Button>
 
             <button
