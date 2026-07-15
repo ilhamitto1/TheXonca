@@ -25,7 +25,7 @@ const STEPS = [
   { id: "collection", label: "Kolleksiya", hint: "Beğəndiyiniz xonça kolleksiyasını seçin" },
   { id: "date", label: "Tarix", hint: "Uyğun günü seçin — dolu tarixlər bağlıdır" },
   { id: "qty", label: "Say", hint: "Neçə xonça lazımdır?" },
-  { id: "tumba", label: "Tumba", hint: "Stand lazımdırsa seçin" },
+  { id: "tumba", label: "Tumba", hint: "Tumba olacaq? Olsa — neçə ədəd?" },
   { id: "delivery", label: "Çatdırılma", hint: "Ünvanınıza gətirək?" },
   { id: "info", label: "Məlumat", hint: "Sizinlə əlaqə saxlamaq üçün" },
   { id: "summary", label: "Xülasə", hint: "Hər şeyi bir dəfə yoxlayın" },
@@ -211,6 +211,41 @@ export function ReservationWizard() {
     }
   }, [searchParams]);
 
+  // Kolleksiya dəyişəndə tumba vəziyyətini sıfırla / uyğunlaşdır
+  useEffect(() => {
+    if (collection.tumbaIncluded) {
+      setNeedTumba(true);
+      setTumbaQuantity(xoncaQuantity);
+    } else if (!collection.tumbaOptional) {
+      setNeedTumba(false);
+      setTumbaQuantity(0);
+    } else {
+      setNeedTumba(false);
+      setTumbaQuantity(Math.max(1, xoncaQuantity));
+    }
+    // only when collection identity changes
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [collection.id]);
+
+  // Xonça sayı dəyişəndə — tumba daxildirsə say avtomatik uyğunlaşır
+  useEffect(() => {
+    if (collection.tumbaIncluded) {
+      setTumbaQuantity(xoncaQuantity);
+    }
+  }, [xoncaQuantity, collection.tumbaIncluded]);
+
+  const tumbaDecision = collection.tumbaIncluded
+    ? ("included" as const)
+    : !collection.tumbaOptional
+      ? ("unavailable" as const)
+      : ("optional" as const);
+
+  const effectiveTumbaQty = collection.tumbaIncluded
+    ? xoncaQuantity
+    : needTumba
+      ? tumbaQuantity
+      : 0;
+
   const validate = (): string | null => {
     switch (step) {
       case 0:
@@ -225,13 +260,11 @@ export function ReservationWizard() {
           return `Maksimum ${collection.maxQuantity}`;
         return null;
       case 3:
-        if (
-          collection.tumbaOptional &&
-          !collection.tumbaIncluded &&
-          needTumba &&
-          tumbaQuantity < 1
-        )
-          return "Tumba sayını seçin";
+        if (tumbaDecision === "optional" && needTumba) {
+          if (tumbaQuantity < 1) return "Tumba sayını seçin (minimum 1)";
+          if (tumbaQuantity > collection.maxQuantity)
+            return `Tumba maksimum ${collection.maxQuantity} ola bilər`;
+        }
         return null;
       case 4:
         if (
@@ -263,14 +296,8 @@ export function ReservationWizard() {
     setError(null);
 
     let next = step + 1;
-    // Skip tumba step when not optional / already included
-    if (
-      next === 3 &&
-      (collection.tumbaIncluded || !collection.tumbaOptional)
-    ) {
-      next = 4;
-    }
-    // Skip delivery when disabled
+    // Tumba addımı həmişə göstərilir — skip yoxdur
+    // Çatdırılma deaktivdirsə keç
     if (
       next === 4 &&
       (!deliveryStore.enabled || !collection.deliveryAvailable)
@@ -289,12 +316,6 @@ export function ReservationWizard() {
     ) {
       prev = 3;
     }
-    if (
-      prev === 3 &&
-      (collection.tumbaIncluded || !collection.tumbaOptional)
-    ) {
-      prev = 2;
-    }
     setStep(Math.max(prev, 0));
   };
 
@@ -305,11 +326,7 @@ export function ReservationWizard() {
     date,
     xoncaQuantity,
     needTumba: collection.tumbaIncluded ? true : needTumba,
-    tumbaQuantity: collection.tumbaIncluded
-      ? xoncaQuantity
-      : needTumba
-        ? tumbaQuantity
-        : 0,
+    tumbaQuantity: effectiveTumbaQty,
     needDelivery: deliveryStore.enabled && needDelivery,
     deliveryFee: pricing.deliveryFee,
     name: name.trim(),
@@ -470,34 +487,190 @@ export function ReservationWizard() {
 
                 {step === 3 && (
                   <div className="space-y-5">
-                    {collection.tumbaIncluded ? (
-                      <p className="rounded-2xl bg-cream/70 p-5 font-body text-sm text-charcoal">
-                        Bu kolleksiyada tumba artıq daxildir — ayrıca seçim
-                        lazım deyil.
+                    {/* Context banner */}
+                    <div className="rounded-2xl border border-ink/8 bg-cream/60 p-4 sm:p-5">
+                      <p className="font-body text-[10px] uppercase tracking-[0.25em] text-gold-deep">
+                        Xonça seçiminiz
                       </p>
-                    ) : !collection.tumbaOptional ? (
-                      <p className="rounded-2xl bg-cream/70 p-5 font-body text-sm text-charcoal">
-                        Bu kolleksiyada tumba seçimi yoxdur.
+                      <p className="mt-2 font-display text-2xl text-ink">
+                        {collection.name}
                       </p>
-                    ) : (
-                      <>
-                        <YesNo value={needTumba} onChange={setNeedTumba} />
+                      <p className="mt-1 font-body text-sm text-stone">
+                        Seçilmiş xonça sayı:{" "}
+                        <strong className="text-ink">{xoncaQuantity}</strong> ədəd
+                      </p>
+                    </div>
+
+                    {tumbaDecision === "included" && (
+                      <div className="space-y-4 rounded-2xl border border-gold/40 bg-pearl p-5">
+                        <div className="flex items-start gap-3">
+                          <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gold/25 text-gold-deep">
+                            <Check className="h-5 w-5" />
+                          </span>
+                          <div>
+                            <p className="font-display text-2xl text-ink">
+                              Tumba daxildir
+                            </p>
+                            <p className="mt-2 font-body text-sm leading-relaxed text-stone">
+                              Bu kolleksiyada stand (tumba) qiymətə daxildir.
+                              Əlavə seçim etməyinizə ehtiyac yoxdur.
+                            </p>
+                          </div>
+                        </div>
+                        <div className="grid grid-cols-2 gap-3 rounded-xl bg-cream/80 p-4">
+                          <div>
+                            <p className="font-body text-[10px] uppercase tracking-[0.2em] text-stone">
+                              Tumba olacaq?
+                            </p>
+                            <p className="mt-1 font-display text-xl text-ink">
+                              Bəli
+                            </p>
+                          </div>
+                          <div>
+                            <p className="font-body text-[10px] uppercase tracking-[0.2em] text-stone">
+                              Tumba sayı
+                            </p>
+                            <p className="mt-1 font-display text-xl text-ink">
+                              {xoncaQuantity} ədəd
+                            </p>
+                          </div>
+                        </div>
+                        <p className="font-body text-xs text-mist">
+                          Tumba sayı xonça sayı ilə eyni götürülür (
+                          {xoncaQuantity}). Davam edin.
+                        </p>
+                      </div>
+                    )}
+
+                    {tumbaDecision === "unavailable" && (
+                      <div className="space-y-4 rounded-2xl border border-ink/10 bg-pearl p-5">
+                        <p className="font-display text-2xl text-ink">
+                          Bu kolleksiyada tumba yoxdur
+                        </p>
+                        <p className="font-body text-sm leading-relaxed text-stone">
+                          Yalnız xonça sifariş olunur. Stand əlavə etmək üçün
+                          digər kolleksiyaları seçə bilərsiniz.
+                        </p>
+                        <div className="grid grid-cols-2 gap-3 rounded-xl bg-cream/80 p-4">
+                          <div>
+                            <p className="font-body text-[10px] uppercase tracking-[0.2em] text-stone">
+                              Tumba olacaq?
+                            </p>
+                            <p className="mt-1 font-display text-xl text-ink">
+                              Xeyr
+                            </p>
+                          </div>
+                          <div>
+                            <p className="font-body text-[10px] uppercase tracking-[0.2em] text-stone">
+                              Tumba sayı
+                            </p>
+                            <p className="mt-1 font-display text-xl text-ink">
+                              0
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+
+                    {tumbaDecision === "optional" && (
+                      <div className="space-y-5">
+                        <div>
+                          <p className="font-display text-xl text-ink sm:text-2xl">
+                            Tumba (stand) lazımdır?
+                          </p>
+                          <p className="mt-2 font-body text-sm text-stone">
+                            İstəsəniz xonçalarınız üçün ayrıca tumba əlavə
+                            edə bilərsiniz. Qiymət:{" "}
+                            <strong className="text-gold-deep">
+                              {formatCurrency(collection.tumbaPrice, "AZN")}
+                            </strong>{" "}
+                            / ədəd
+                          </p>
+                        </div>
+
+                        <YesNo
+                          value={needTumba}
+                          onChange={(v) => {
+                            setNeedTumba(v);
+                            if (v) {
+                              setTumbaQuantity((q) =>
+                                q < 1 ? Math.max(1, xoncaQuantity) : q,
+                              );
+                            }
+                            setError(null);
+                          }}
+                        />
+
                         {needTumba ? (
-                          <div className="space-y-3">
+                          <div className="space-y-4 rounded-2xl border border-gold/35 bg-cream/50 p-4 sm:p-5">
+                            <p className="font-display text-xl text-ink">
+                              Neçə tumba olacaq?
+                            </p>
+                            <p className="font-body text-sm text-stone">
+                              Adətən hər xonça üçün 1 tumba seçilir. İstəsəniz
+                              fərqli say da yaza bilərsiniz.
+                            </p>
                             <QtyStepper
                               label="Tumba sayı"
                               value={tumbaQuantity}
                               min={1}
                               max={collection.maxQuantity}
-                              onChange={setTumbaQuantity}
+                              onChange={(v) => {
+                                setTumbaQuantity(v);
+                                setError(null);
+                              }}
                             />
-                            <p className="font-body text-sm text-gold-deep">
-                              {formatCurrency(collection.tumbaPrice, "AZN")} /
-                              ədəd
+                            <button
+                              type="button"
+                              onClick={() => setTumbaQuantity(xoncaQuantity)}
+                              className="h-11 w-full rounded-xl border border-ink/15 bg-pearl font-body text-xs uppercase tracking-[0.16em] text-ink"
+                            >
+                              Xonça sayı qədər et ({xoncaQuantity})
+                            </button>
+                            <div className="rounded-xl bg-pearl px-4 py-3 font-body text-sm text-charcoal">
+                              <div className="flex justify-between gap-3">
+                                <span>Tumba × {tumbaQuantity}</span>
+                                <span className="text-gold-deep">
+                                  {formatCurrency(
+                                    tumbaQuantity * collection.tumbaPrice,
+                                    "AZN",
+                                  )}
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                        ) : (
+                          <div className="rounded-2xl border border-ink/10 bg-pearl p-4">
+                            <p className="font-body text-sm text-stone">
+                              Tumba seçilməyib. Yalnız{" "}
+                              <strong className="text-ink">
+                                {xoncaQuantity} xonça
+                              </strong>{" "}
+                              ilə davam edəcəksiniz.
                             </p>
                           </div>
-                        ) : null}
-                      </>
+                        )}
+
+                        {/* Decision summary */}
+                        <div className="grid grid-cols-2 gap-3 rounded-2xl border border-ink/10 bg-espresso p-4 text-ivory">
+                          <div>
+                            <p className="font-body text-[10px] uppercase tracking-[0.2em] text-gold-soft">
+                              Tumba olacaq?
+                            </p>
+                            <p className="mt-1 font-display text-2xl">
+                              {needTumba ? "Bəli" : "Xeyr"}
+                            </p>
+                          </div>
+                          <div>
+                            <p className="font-body text-[10px] uppercase tracking-[0.2em] text-gold-soft">
+                              Tumba sayı
+                            </p>
+                            <p className="mt-1 font-display text-2xl">
+                              {needTumba ? tumbaQuantity : 0}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
                     )}
                   </div>
                 )}
@@ -621,15 +794,15 @@ export function ReservationWizard() {
                     />
                     <Row k="Xonça sayı" v={String(xoncaQuantity)} />
                     <Row
-                      k="Tumba"
+                      k="Tumba olacaq?"
+                      v={effectiveTumbaQty > 0 ? "Bəli" : "Xeyr"}
+                    />
+                    <Row
+                      k="Tumba sayı"
                       v={
-                        collection.tumbaIncluded || needTumba
-                          ? `Bəli (${
-                              collection.tumbaIncluded
-                                ? xoncaQuantity
-                                : tumbaQuantity
-                            })`
-                          : "Xeyr"
+                        effectiveTumbaQty > 0
+                          ? `${effectiveTumbaQty} ədəd`
+                          : "0"
                       }
                     />
                     <Row k="Çatdırılma" v={needDelivery ? "Bəli" : "Xeyr"} />
@@ -723,7 +896,12 @@ export function ReservationWizard() {
                   <span>{formatCurrency(pricing.xoncaTotal, "AZN")}</span>
                 </div>
                 <div className="flex justify-between gap-3">
-                  <span>Tumba</span>
+                  <span>
+                    Tumba{" "}
+                    {effectiveTumbaQty > 0
+                      ? `× ${effectiveTumbaQty}`
+                      : "(yox)"}
+                  </span>
                   <span>{formatCurrency(pricing.tumbaTotal, "AZN")}</span>
                 </div>
                 <div className="flex justify-between gap-3">

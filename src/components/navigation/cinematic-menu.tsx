@@ -13,6 +13,7 @@ export function CinematicMenu() {
     <AnimatePresence>
       {isMenuOpen ? (
         <m.div
+          id="site-menu"
           className="fixed inset-0 z-[80] flex flex-col overflow-hidden bg-espresso text-ivory"
           variants={menuOverlay}
           initial="closed"
@@ -28,26 +29,19 @@ export function CinematicMenu() {
             <div className="absolute inset-0 noise-overlay" />
           </div>
 
-          <div className="container-lux relative z-10 flex h-full flex-col overflow-y-auto overscroll-contain py-6 pb-[max(1.5rem,env(safe-area-inset-bottom))] pt-[max(1.5rem,env(safe-area-inset-top))]">
-            <div className="flex items-center justify-between">
-              <p className="font-body text-[10px] uppercase tracking-[0.4em] text-gold-soft">
-                Menyü
-              </p>
-              <button
-                type="button"
-                onClick={() => setMenuOpen(false)}
-                className="flex h-11 items-center rounded-full border border-ivory/15 px-5 font-body text-xs uppercase tracking-[0.25em] text-ivory/90"
-              >
-                Bağla
-              </button>
-            </div>
+          <div className="container-lux relative z-10 flex h-full min-h-0 flex-col overflow-y-auto overscroll-contain px-0 pb-[max(1.5rem,env(safe-area-inset-bottom))] pt-[calc(4.75rem+env(safe-area-inset-top))] sm:pt-[calc(5.25rem+env(safe-area-inset-top))]">
+            <p className="shrink-0 font-body text-[10px] uppercase tracking-[0.4em] text-gold-soft">
+              Menyü
+            </p>
 
             <m.nav
-              className="my-auto flex flex-col gap-1 py-8 sm:gap-2"
+              className="my-auto flex flex-col gap-0.5 py-6 sm:gap-1 sm:py-8"
               initial="closed"
               animate="open"
               variants={{
-                open: { transition: { staggerChildren: 0.06, delayChildren: 0.15 } },
+                open: {
+                  transition: { staggerChildren: 0.06, delayChildren: 0.12 },
+                },
                 closed: {},
               }}
             >
@@ -56,12 +50,12 @@ export function CinematicMenu() {
                   <Link
                     href={link.href}
                     onClick={() => setMenuOpen(false)}
-                    className="group flex min-h-14 items-center gap-4 py-2 sm:gap-6"
+                    className="group flex min-h-12 items-center gap-4 py-1.5 sm:min-h-14 sm:gap-6 sm:py-2"
                   >
-                    <span className="font-body text-[10px] tracking-[0.3em] text-gold/70">
+                    <span className="w-6 shrink-0 font-body text-[10px] tracking-[0.3em] text-gold/70">
                       {String(i + 1).padStart(2, "0")}
                     </span>
-                    <span className="font-display text-[clamp(2.2rem,9vw,6.5rem)] leading-[0.95] tracking-[-0.04em] transition-colors group-hover:text-gold-soft">
+                    <span className="font-display text-[clamp(2rem,8.5vw,5.75rem)] leading-[0.95] tracking-[-0.04em] transition-colors group-hover:text-gold-soft">
                       {link.label}
                     </span>
                   </Link>
@@ -70,16 +64,16 @@ export function CinematicMenu() {
             </m.nav>
 
             <m.div
-              className="flex flex-col gap-4 border-t border-ivory/10 pt-8 sm:flex-row sm:items-end sm:justify-between"
-              initial={{ opacity: 0, y: 20 }}
+              className="mt-auto flex shrink-0 flex-col gap-3 border-t border-ivory/10 pt-6 sm:flex-row sm:items-end sm:justify-between sm:gap-4 sm:pt-8"
+              initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.7, duration: 0.8 }}
+              transition={{ delay: 0.55, duration: 0.7 }}
             >
               <div>
                 <p className="font-body text-[10px] uppercase tracking-[0.3em] text-mist">
                   Atelye
                 </p>
-                <p className="mt-2 font-display text-2xl text-ivory/90">
+                <p className="mt-2 font-display text-xl text-ivory/90 sm:text-2xl">
                   {SITE.address.line1}, {SITE.address.city}
                 </p>
               </div>

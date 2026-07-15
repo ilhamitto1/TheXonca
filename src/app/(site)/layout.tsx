@@ -10,7 +10,10 @@ export default function SiteLayout({
   return (
     <>
       <Navbar />
-      <main id="main-content" className="min-h-screen pb-16 sm:pb-0">
+      <main
+        id="main-content"
+        className="min-h-screen pb-[calc(4.25rem+env(safe-area-inset-bottom))] xl:pb-0"
+      >
         {children}
       </main>
       <Footer />
