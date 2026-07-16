@@ -74,23 +74,12 @@ export const charReveal: Variants = {
   },
 };
 
-export const menuOverlay: Variants = {
-  closed: {
-    clipPath: "circle(0% at calc(100% - 3rem) 3rem)",
-    transition: { duration: 0.8, ease: [0.65, 0, 0.35, 1] },
-  },
-  open: {
-    clipPath: "circle(150% at calc(100% - 3rem) 3rem)",
-    transition: { duration: 1, ease: [0.22, 1, 0.36, 1] },
-  },
-};
-
 export const menuItem: Variants = {
-  closed: { opacity: 0, x: -40, filter: "blur(8px)" },
+  closed: { opacity: 0, x: -28, filter: "blur(6px)" },
   open: {
     opacity: 1,
     x: 0,
     filter: "blur(0px)",
-    transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] },
+    transition: { duration: 0.55, ease: [0.22, 1, 0.36, 1] },
   },
 };
