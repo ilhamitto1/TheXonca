@@ -4,8 +4,8 @@ import Link from "next/link";
 import { m, useMotionValue, useSpring, useTransform } from "motion/react";
 import dynamic from "next/dynamic";
 import { Button } from "@/components/ui/button";
-import { CollectionPlaceholder } from "@/components/shared/collection-placeholder";
-import { homeContent } from "@/data/collections";
+import { CollectionCover } from "@/components/shared/collection-media";
+import { collections, homeContent } from "@/data/collections";
 import { useUIStore } from "@/stores/ui-store";
 
 const FloralScene = dynamic(
@@ -32,6 +32,8 @@ export function HeroSection() {
   };
 
   const { hero } = homeContent;
+  const featured =
+    collections.find((c) => c.slug === hero.featuredSlug) ?? collections[0];
 
   return (
     <section
@@ -46,8 +48,8 @@ export function HeroSection() {
         style={{ left: glowX, top: glowY }}
       />
 
-      <div className="container-lux relative z-10 grid min-h-[100svh] items-end gap-10 pb-16 pt-32 lg:grid-cols-[1.1fr_0.9fr] lg:items-center lg:pb-24 lg:pt-28">
-        <div className="max-w-3xl">
+      <div className="container-lux relative z-10 grid min-h-[100svh] min-w-0 items-end gap-8 pb-16 pt-28 sm:gap-10 sm:pt-32 lg:grid-cols-[1.1fr_0.9fr] lg:items-center lg:pb-24 lg:pt-28">
+        <div className="max-w-3xl min-w-0">
           <m.p
             className="font-body text-[10px] uppercase tracking-[0.42em] text-stone"
             initial={{ opacity: 0, y: 20 }}
@@ -98,21 +100,31 @@ export function HeroSection() {
         </div>
 
         <m.div
-          className="relative mx-auto w-full max-w-md lg:max-w-none"
+          className="relative mx-auto w-full min-w-0 max-w-md lg:max-w-none"
           style={{ x: imgX, y: imgY }}
           initial={{ opacity: 0, scale: 1.06 }}
           animate={hasLoaded ? { opacity: 1, scale: 1 } : {}}
           transition={{ delay: 0.45, duration: 1.3, ease: [0.22, 1, 0.36, 1] }}
         >
-          <div className="absolute -inset-4 rounded-[2rem] bg-gradient-to-br from-gold/20 via-transparent to-blush/30 blur-2xl" />
-          <div className="relative overflow-hidden rounded-[1.5rem] shadow-lift">
-            <CollectionPlaceholder title="Imperial Gold" variant="hero" index={0} />
-            <div className="absolute inset-x-0 bottom-0 p-6">
-              <div className="glass rounded-2xl px-5 py-4">
-                <p className="font-body text-[10px] uppercase tracking-[0.3em] text-stone">
+          <div className="absolute -inset-3 rounded-[2rem] bg-gradient-to-br from-gold/20 via-transparent to-blush/30 blur-2xl sm:-inset-4" />
+          <div className="relative overflow-hidden rounded-[1.15rem] shadow-lift sm:rounded-[1.5rem]">
+            <CollectionCover
+              images={featured?.images ?? []}
+              videos={featured?.videos ?? []}
+              alt={featured?.name ?? "The Xonca"}
+              variant="hero"
+              priority
+              sizes="(max-width: 1024px) 90vw, 40vw"
+              className="!max-h-[min(58svh,28rem)] sm:!max-h-[min(64svh,34rem)] lg:!max-h-none"
+            />
+            <div className="absolute inset-x-0 bottom-0 p-4 sm:p-6">
+              <div className="glass rounded-xl px-4 py-3 sm:rounded-2xl sm:px-5 sm:py-4">
+                <p className="font-body text-[9px] uppercase tracking-[0.28em] text-stone sm:text-[10px] sm:tracking-[0.3em]">
                   Seçilmiş kolleksiya
                 </p>
-                <p className="mt-1 font-display text-2xl text-ink">Imperial Gold</p>
+                <p className="mt-1 font-display text-xl text-ink sm:text-2xl">
+                  {featured?.name ?? "The Xonca"}
+                </p>
               </div>
             </div>
           </div>

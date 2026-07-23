@@ -2,11 +2,13 @@
 
 import { Reveal } from "@/components/animations/reveal";
 import { TextReveal } from "@/components/animations/text-reveal";
-import { CollectionPlaceholder } from "@/components/shared/collection-placeholder";
-import { homeContent } from "@/data/collections";
+import { CollectionCover } from "@/components/shared/collection-media";
+import { collections, homeContent } from "@/data/collections";
 
 export function StorySection() {
   const { story } = homeContent;
+  const storyCollection =
+    collections.find((c) => c.slug === story.imageSlug) ?? collections[0];
 
   return (
     <section className="section-y relative overflow-hidden bg-cream">
@@ -43,15 +45,22 @@ export function StorySection() {
           </div>
         </div>
 
-        <div className="relative lg:col-span-7">
+        <div className="relative lg:col-span-7 min-w-0">
           <div className="overflow-hidden shadow-lift">
-            <CollectionPlaceholder title="The Xonca" variant="gallery" index={1} />
+            <CollectionCover
+              images={storyCollection?.images ?? []}
+              videos={storyCollection?.videos ?? []}
+              alt={storyCollection?.name ?? "The Xonca"}
+              variant="gallery"
+              sizes="(max-width: 1024px) 100vw, 55vw"
+              className="!max-h-[min(52svh,28rem)] sm:!max-h-[min(58svh,34rem)] lg:!max-h-none"
+            />
           </div>
           <Reveal
             delay={0.25}
-            className="absolute -bottom-8 left-6 max-w-xs glass p-6 sm:left-10"
+            className="absolute -bottom-6 left-3 max-w-[min(100%-1.5rem,20rem)] glass p-4 sm:-bottom-8 sm:left-10 sm:max-w-xs sm:p-6"
           >
-            <p className="font-display text-2xl leading-snug text-ink">
+            <p className="font-display text-lg leading-snug text-ink sm:text-2xl">
               “Hər xonça mərasimin lüks imzasıdır.”
             </p>
           </Reveal>

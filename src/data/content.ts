@@ -6,5 +6,6 @@ export {
   collectionCategories,
   getCollectionBySlug,
   getRelatedCollections,
+  getAllCollectionMedia,
   getDemoUnavailableDates,
 } from "./collections";

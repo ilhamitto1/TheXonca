@@ -56,6 +56,17 @@
     scroll-behavior: auto;
   }
 
+  img,
+  canvas,
+  svg {
+    max-width: 100%;
+    height: auto;
+  }
+
+  video {
+    max-width: 100%;
+  }
+
   html.lenis,
   html.lenis body {
     height: auto;
@@ -222,6 +233,94 @@
 
   .section-y {
     padding-block: var(--xonca-section-y);
+  }
+
+  /* Fluid media frames — phone → desktop */
+  .media-frame {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    background: color-mix(in oklab, var(--xonca-ink) 6%, transparent);
+  }
+
+  .media-frame > img,
+  .media-frame > video,
+  .media-frame > span {
+    display: block;
+  }
+
+  .media-portrait {
+    aspect-ratio: 4 / 5;
+    max-height: min(78svh, 920px);
+  }
+
+  .media-stage {
+    aspect-ratio: 4 / 5;
+    max-height: min(72svh, 860px);
+  }
+
+  @media (min-width: 640px) {
+    .media-stage {
+      aspect-ratio: 3 / 4;
+      max-height: min(78svh, 920px);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .media-stage {
+      aspect-ratio: 3 / 4;
+      max-height: none;
+    }
+  }
+
+  .media-video-spotlight {
+    aspect-ratio: 9 / 16;
+    width: 100%;
+    max-width: min(100%, 26rem);
+    max-height: min(70svh, 640px);
+    margin-inline: auto;
+  }
+
+  @media (min-width: 640px) {
+    .media-video-spotlight {
+      aspect-ratio: 16 / 9;
+      max-width: none;
+      max-height: min(62vh, 560px);
+    }
+  }
+
+  .media-video-card {
+    aspect-ratio: 4 / 5;
+  }
+
+  @media (min-width: 640px) {
+    .media-video-card {
+      aspect-ratio: 16 / 9;
+    }
+  }
+
+  .touch-scroll-x {
+    display: flex;
+    gap: 0.625rem;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .touch-scroll-x::-webkit-scrollbar {
+    display: none;
+  }
+
+  .safe-px {
+    padding-left: max(var(--xonca-gutter), env(safe-area-inset-left));
+    padding-right: max(var(--xonca-gutter), env(safe-area-inset-right));
+  }
+
+  .safe-pb {
+    padding-bottom: max(1rem, env(safe-area-inset-bottom));
   }
 
   .gold-line {

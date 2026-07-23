@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { SITE } from "@/lib/constants/site";
-import { CollectionPlaceholder } from "@/components/shared/collection-placeholder";
+import { CollectionCover } from "@/components/shared/collection-media";
+import { collections } from "@/data/collections";
 
 export const metadata: Metadata = {
   title: "Haqqımızda",
@@ -10,7 +11,7 @@ export const metadata: Metadata = {
 const timeline = [
   { year: "2018", title: "Başlanğıc", body: "Kiçik atelyedə ilk premium xonça sifarişləri." },
   { year: "2021", title: "Tumba sistemi", body: "Xonça stand (tumba) xidməti rəsmi portfelə əlavə olundu." },
-  { year: "2024", title: "Kolleksiya evi", body: "Imperial, Ivory, Midnight kimi imza seriyalar formalaşdı." },
+  { year: "2024", title: "Kolleksiya evi", body: "Elizabeth və Şahzadə kimi imza seriyalar formalaşdı." },
   { year: "2026", title: "Rəqəmsal rezervasiya", body: "WhatsApp əsaslı lüks rezervasiya platforması." },
 ];
 
@@ -22,6 +23,8 @@ const why = [
 ];
 
 export default function AboutPage() {
+  const featured = collections[0];
+
   return (
     <div className="bg-ivory pb-24 pt-36">
       <div className="container-lux grid items-center gap-12 lg:grid-cols-2">
@@ -39,7 +42,13 @@ export default function AboutPage() {
           </p>
         </div>
         <div className="overflow-hidden shadow-lift">
-          <CollectionPlaceholder title="The Xonca" variant="hero" index={2} />
+          <CollectionCover
+            images={featured?.images ?? []}
+            videos={featured?.videos ?? []}
+            alt={featured?.name ?? "The Xonca"}
+            variant="hero"
+            priority
+          />
         </div>
       </div>
 
@@ -90,7 +99,7 @@ export default function AboutPage() {
       <div className="container-lux mt-24 grid grid-cols-3 gap-4 border-y border-ink/10 py-12 text-center">
         {[
           { value: "120+", label: "Xonça" },
-          { value: "6", label: "Kolleksiya" },
+          { value: String(collections.length), label: "Kolleksiya" },
           { value: "150", label: "AZN çatdırılma" },
         ].map((stat) => (
           <div key={stat.label}>

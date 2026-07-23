@@ -409,36 +409,70 @@ export function ReservationWizard() {
                   <div className="grid gap-3">
                     {collections.map((c) => {
                       const active = collectionSlug === c.slug;
+                      const thumb = c.images[0] || c.videos[0];
                       return (
                         <button
                           key={c.id}
                           type="button"
                           onClick={() => setCollectionSlug(c.slug)}
                           className={cn(
-                            "rounded-2xl border p-4 text-left transition active:scale-[0.995] sm:p-5",
+                            "rounded-2xl border p-3 text-left transition active:scale-[0.995] sm:p-5",
                             active
                               ? "border-gold bg-cream shadow-soft"
                               : "border-ink/10 hover:border-gold/50",
                           )}
                         >
-                          <div className="flex items-start justify-between gap-3">
-                            <div>
-                              <p className="font-display text-2xl text-ink">
-                                {c.name}
-                              </p>
-                              <p className="mt-1 font-body text-sm text-stone">
-                                {c.shortDescription}
-                              </p>
-                            </div>
-                            {active ? (
-                              <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-gold text-ink">
-                                <Check className="h-4 w-4" />
+                          <div className="flex items-start gap-3 sm:gap-4">
+                            {thumb ? (
+                              <span className="relative h-16 w-14 shrink-0 overflow-hidden rounded-xl bg-ink/5 sm:h-20 sm:w-[4.5rem]">
+                                {/\.mp4/i.test(thumb) ? (
+                                  <video
+                                    src={thumb}
+                                    muted
+                                    playsInline
+                                    preload="metadata"
+                                    className="absolute inset-0 h-full w-full object-cover"
+                                  />
+                                ) : (
+                                  // eslint-disable-next-line @next/next/no-img-element
+                                  <img
+                                    src={thumb}
+                                    alt=""
+                                    className="absolute inset-0 h-full w-full object-cover"
+                                  />
+                                )}
                               </span>
                             ) : null}
+                            <div className="min-w-0 flex-1">
+                              <div className="flex items-start justify-between gap-2">
+                                <div className="min-w-0">
+                                  <p className="font-display text-xl text-ink sm:text-2xl">
+                                    {c.name}
+                                  </p>
+                                  <p className="mt-1 line-clamp-2 font-body text-sm text-stone">
+                                    {c.shortDescription}
+                                  </p>
+                                </div>
+                                {active ? (
+                                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-gold text-ink">
+                                    <Check className="h-4 w-4" />
+                                  </span>
+                                ) : null}
+                              </div>
+                              <p className="mt-2 font-body text-[11px] text-mist">
+                                {c.images.length} foto
+                                {c.videos.length > 0
+                                  ? ` · ${c.videos.length} video`
+                                  : ""}
+                              </p>
+                              <p className="mt-2 font-display text-lg text-gold-deep sm:text-xl">
+                                {formatCurrency(
+                                  c.discountPrice ?? c.price,
+                                  "AZN",
+                                )}
+                              </p>
+                            </div>
                           </div>
-                          <p className="mt-3 font-display text-xl text-gold-deep">
-                            {formatCurrency(c.discountPrice ?? c.price, "AZN")}
-                          </p>
                         </button>
                       );
                     })}
